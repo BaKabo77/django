@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+
+{% block title %}Détail de la Facture{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-10 offset-md-1">
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h2 class="card-title mb-0">
+                    <i class="fas fa-file-invoice me-2"></i>Facture {{ facture.numero }}
+                </h2>
+                <p class="text-light mb-0 mt-2">
+                    <i class="fas fa-calendar me-1"></i>Créée le : {{ facture.date_creation|date:"d/m/Y H:i" }}
+                </p>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-striped table-hover">
+                        <thead class="table-dark">
+                            <tr>
+                                <th><i class="fas fa-box me-1"></i>Produit</th>
+                                <th><i class="fas fa-hashtag me-1"></i>Quantité</th>
+                                <th><i class="fas fa-euro-sign me-1"></i>Prix unitaire</th>
+                                <th><i class="fas fa-calculator me-1"></i>Sous-total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for ligne in facture.lignes.all %}
+                            <tr>
+                                <td><strong>{{ ligne.produit.nom }}</strong></td>
+                                <td><span class="badge bg-info">{{ ligne.quantite }}</span></td>
+                                <td>{{ ligne.prix_unitaire }} €</td>
+                                <td><span class="badge bg-secondary">{{ ligne.sous_total }} €</span></td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="text-end mt-4">
+                    <div class="alert alert-success d-inline-block">
+                        <h4 class="mb-0">
+                            <i class="fas fa-euro-sign me-1"></i>Total : {{ facture.total }} €
+                        </h4>
+                    </div>
+                </div>
+                
+                <div class="mt-4 d-flex gap-2">
+                    <a href="{% url 'accueil' %}" class="btn btn-primary">
+                        <i class="fas fa-home me-1"></i>Retour à l'accueil
+                    </a>
+                    <a href="{% url 'selection_produits' %}" class="btn btn-success">
+                        <i class="fas fa-plus me-1"></i>Nouvelle Facture
+                    </a>
+                    <a href="{% url 'liste_factures' %}" class="btn btn-info">
+                        <i class="fas fa-list me-1"></i>Liste des Factures
+                    </a>
+                    <a href="{% url 'supprimer_facture' facture.id %}" class="btn btn-danger" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette facture ?')">
+                        <i class="fas fa-trash me-1"></i>Supprimer la Facture
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+
+{% block title %}Liste des Produits{% endblock %}
+
+{% block content %}
+<h1 class="mb-4">Liste des Produits</h1>
+
+<div class="mb-4">
+    <a href="{% url 'selection_produits' %}" class="btn btn-success">
+        <i class="fas fa-file-invoice me-1"></i>Créer une Facture
+    </a>
+    <a href="{% url 'liste_factures' %}" class="btn btn-info">
+        <i class="fas fa-list me-1"></i>Voir les Factures
+    </a>
+    <a href="{% url 'ajouter_produit' %}" class="btn btn-primary">
+        <i class="fas fa-plus me-1"></i>Ajouter un Produit
+    </a>
+</div>
+
+<div class="row">
+    {% for produit in produits %}
+    <div class="col-md-4 mb-4">
+        <div class="card h-100">
+            <div class="card-body">
+                <h5 class="card-title">{{ produit.nom }}</h5>
+                <p class="card-text"><strong>ID :</strong> {{ produit.id }}</p>
+                <p class="card-text">{{ produit.description }}</p>
+                <p class="card-text"><strong>Prix :</strong> {{ produit.prix }} €</p>
+                <p class="card-text"><small class="text-muted">Date de peremption : {{ produit.date_peremption|date:"d/m/Y" }}</small></p>
+            </div>
+            <div class="card-footer">
+                <div class="btn-group w-100" role="group">
+                    <a href="{% url 'detail_produit' produit.id %}" class="btn btn-primary btn-sm">
+                        <i class="fas fa-eye me-1"></i>Détails
+                    </a>
+                    <a href="{% url 'modifier_produit' produit.id %}" class="btn btn-warning btn-sm">
+                        <i class="fas fa-edit me-1"></i>Modifier
+                    </a>
+                    <a href="{% url 'supprimer_produit' produit.id %}" class="btn btn-danger btn-sm">
+                        <i class="fas fa-trash me-1"></i>Supprimer
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% empty %}
+    <div class="col-12">
+        <div class="alert alert-info text-center">
+            <i class="fas fa-info-circle me-2"></i>Aucun produit disponible.
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

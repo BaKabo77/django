@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% block title %}Sélection des Produits{% endblock %}
+
+{% block content %}
+<h1 class="mb-4">
+    <i class="fas fa-shopping-cart me-2"></i>Sélectionner les Produits
+</h1>
+
+<form method="POST">
+    {% csrf_token %}
+    <div class="row">
+        {% for produit in produits %}
+        <div class="col-md-6 mb-3">
+            <div class="card h-100">
+                <div class="card-body">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" name="produits" value="{{ produit.id }}" id="produit_{{ produit.id }}">
+                        <label class="form-check-label" for="produit_{{ produit.id }}">
+                            <h5 class="card-title">{{ produit.nom }}</h5>
+                            <p class="card-text">{{ produit.description }}</p>
+                            <p class="card-text"><strong>Prix :</strong> <span class="badge bg-success">{{ produit.prix }} €</span></p>
+                        </label>
+                    </div>
+                    <div class="mt-3">
+                        <label for="quantite_{{ produit.id }}" class="form-label">Quantité :</label>
+                        <input type="number" class="form-control" name="quantites" id="quantite_{{ produit.id }}" min="1" value="1" style="width: 120px;">
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-12">
+            <div class="alert alert-info text-center">
+                <i class="fas fa-info-circle me-2"></i>Aucun produit disponible pour la facturation.
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    
+    <div class="mt-4">
+        <button type="submit" class="btn btn-primary">
+            <i class="fas fa-file-invoice me-1"></i>Créer la Facture
+        </button>
+        <a href="{% url 'accueil' %}" class="btn btn-secondary">
+            <i class="fas fa-arrow-left me-1"></i>Retour
+        </a>
+    </div>
+</form>
+{% endblock %} 
